@@ -69,6 +69,12 @@ arena contains walls, a ramp, a hoop, a pyramid, a rectangle, and a sphere.
 Collection recipes vary player position, movement, camera direction, target,
 path, approach style, projectile arc, and interaction outcome.
 
+![Representative mission observations](docs/images/mission-overview.jpg)
+
+The overview above samples the major V1 and V2 mission families, including
+object viewing, contact and recovery, ramp and hoop traversal, projectile
+contacts, boundary exits, and trajectory-state control.
+
 The simulator records images and structured metadata together. This makes it
 possible to reconstruct not only what appeared on screen, but also which
 control was applied, what changed between two frames, which mission was being
@@ -240,6 +246,12 @@ families:
 
 </details>
 
+Semi-Markov collection complements the targeted missions with longer sequences
+that change movement, camera direction, observed objects, and action state over
+time:
+
+![V2 semi-Markov sequence](docs/images/semi-markov-sequence.jpg)
+
 ### Episode-safe data split
 
 The train/validation/test split is deterministic and grouped by underlying
@@ -339,6 +351,18 @@ The final training evaluation on the held-out validation probe recorded:
 | Trajectory IoU | 0.9171 |
 | Crosshair pixel mismatches | 0 |
 
+The following held-out examples show the input, scene-only reconstruction,
+ground-truth trajectory mask, predicted trajectory mask, final composed
+reconstruction, and amplified absolute error:
+
+![Selected factorized-autoencoder decompositions](docs/images/autoencoder/selected-examples.jpg)
+
+Full-resolution panels: [AE06](docs/images/autoencoder/ae-06.jpg),
+[AE07](docs/images/autoencoder/ae-07.jpg),
+[AE08](docs/images/autoencoder/ae-08.jpg),
+[AE09](docs/images/autoencoder/ae-09.jpg), and
+[AE10](docs/images/autoencoder/ae-10.jpg).
+
 The autoencoder implementation, accepted training configuration, evaluation
 code, and dataset readers are included in this repository. Checkpoints and
 training data are not included.
@@ -366,4 +390,5 @@ promised release. The current public boundary is the dataset-generation tooling,
 dataset/shard utilities, and autoencoder code. Simulator source, assets,
 packaged builds, datasets, checkpoints, experiment storage, and recurrent
 world-model implementation are not included.
+
 
