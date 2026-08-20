@@ -1,0 +1,69 @@
+{
+  "selection_version": "factorized-ae-latent-selection-v1",
+  "seed": 17082026,
+  "split_fractions": {"train": 0.9, "validation": 0.05, "test": 0.05},
+  "validation_probe_images": 256,
+  "stages": [
+    {"name": "stage-1", "target_total_images": 64000, "keep": 6},
+    {"name": "stage-2", "target_total_images": 256000, "keep": 3},
+    {"name": "stage-3", "target_total_images": 750000, "keep": 1}
+  ],
+  "ranking": {
+    "formula": "weighted_total + 0.25*(1-trajectory_f1) + 0.10*(1-exact_core_f1)",
+    "max_predicted_foreground_fraction": 0.05,
+    "min_trajectory_f1": 0.05,
+    "retain_pareto_candidates": true,
+    "full_validation_finalists": true,
+    "final_relative_score_tolerance": 0.01,
+    "require_approval_before_full_training": true
+  },
+  "base_model": {
+    "contract_version": "final-independent-rgb-encoders-deterministic-crosshair-v2",
+    "objective_version": "final-factorized-objective-v2",
+    "scene_width": 24,
+    "trajectory_width": 12,
+    "objective": {
+      "target_score_threshold": 0.05,
+      "antialias_support_radius": 2,
+      "positive_weight_cap": 128.0
+    },
+    "loss_weights": {
+      "scene_l1": 1.0,
+      "trajectory": 0.2,
+      "final_l1": 1.0,
+      "final_edge": 0.05,
+      "final_trajectory_rgb": 0.04,
+      "final_crosshair_rgb": 0.04,
+      "final_trajectory_overlap": 0.1
+    },
+    "optimizer": {
+      "name": "AdamW",
+      "learning_rate": 0.0003,
+      "weight_decay": 0.0001
+    },
+    "training": {
+      "batch_size": 16,
+      "accumulation_steps": 8,
+      "workers": 8,
+      "prefetch_factor": 3,
+      "shuffle_buffer": 256,
+      "checkpoint_every_images": 64000,
+      "log_every_optimizer_steps": 100,
+      "precision": "bfloat16"
+    }
+  },
+  "candidates": [
+    {"id": "A", "scene_channels": 2, "scene_resolution": 96, "trajectory_channels": 1, "trajectory_resolution": 96},
+    {"id": "B", "scene_channels": 4, "scene_resolution": 96, "trajectory_channels": 1, "trajectory_resolution": 96},
+    {"id": "C", "scene_channels": 4, "scene_resolution": 96, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "D", "scene_channels": 6, "scene_resolution": 96, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "E", "scene_channels": 8, "scene_resolution": 96, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "F", "scene_channels": 8, "scene_resolution": 96, "trajectory_channels": 4, "trajectory_resolution": 96},
+    {"id": "G", "scene_channels": 8, "scene_resolution": 48, "trajectory_channels": 1, "trajectory_resolution": 96},
+    {"id": "H", "scene_channels": 12, "scene_resolution": 48, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "I", "scene_channels": 16, "scene_resolution": 48, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "J", "scene_channels": 24, "scene_resolution": 48, "trajectory_channels": 2, "trajectory_resolution": 96},
+    {"id": "K", "scene_channels": 16, "scene_resolution": 48, "trajectory_channels": 4, "trajectory_resolution": 48},
+    {"id": "L", "scene_channels": 24, "scene_resolution": 48, "trajectory_channels": 4, "trajectory_resolution": 48}
+  ]
+}

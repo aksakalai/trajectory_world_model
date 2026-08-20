@@ -11,7 +11,10 @@ The two completed parts of the project are:
 1. generating and validating a structured simulator dataset; and
 2. training a factorized autoencoder for the scene, trajectory, and crosshair.
 
-The recurrent world model is the next step and remains a work in progress.
+This repository now contains the dataset-generation orchestration, shard and
+split utilities, and factorized-autoencoder implementation used for those two
+stages. The recurrent world model is the next step and remains a work in
+progress; its implementation is not part of this code release.
 
 ## At a glance
 
@@ -26,6 +29,38 @@ The recurrent world model is the next step and remains a work in progress.
 | Dataset shards | 363 |
 | Compressed shard size | 322.28 GiB |
 | Final autoencoder parameters | 196,861 |
+
+## Repository contents
+
+| Path | Contents |
+| --- | --- |
+| `data_generation/` | Mission catalogs, deterministic planners, packaged-build workers, shard finalization, validation, review rendering, and generator regression tests |
+| `src/world_model_trajectory/data/` | Tar-shard readers, distributed sampling, episode-safe split loading, and crosshair canonicalization |
+| `src/world_model_trajectory/models/` | Plain, comparison, factorized, and final factorized autoencoders |
+| `src/world_model_trajectory/training/` | Reconstruction and renderer-aware autoencoder objectives |
+| `scripts/` | Dataset migration/inspection and autoencoder training, evaluation, calibration, rendering, and smoke-test entry points |
+| `configs/autoencoder/` | Configuration for the accepted final autoencoder |
+| `tests/` | Dataset and autoencoder regression tests |
+
+The dataset-generation code drives a compatible packaged simulator build. The
+Unreal Engine project, game assets, and packaged build are not included. The
+build may or may not be made public in the future; there is no promise or
+release schedule.
+
+Install the Python dependencies with:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Generator-only dependencies and operating notes are in
+[`data_generation/README.md`](data_generation/README.md).
+
+After installing both requirement files, run the public regression suite with:
+
+```bash
+python -m pytest -q
+```
 
 ## Dataset generation
 
@@ -225,9 +260,8 @@ connected to the first frame of another.
 
 ### Data availability
 
-The dataset is **not public yet**. I plan to publish it after the shards,
-metadata, and usage documentation have been packaged into a practical release.
-There is no fixed release date at this stage.
+The dataset is not public. It may or may not be released in the future, and
+there is no commitment or release schedule.
 
 ## Factorized autoencoder
 
@@ -305,8 +339,9 @@ The final training evaluation on the held-out validation probe recorded:
 | Trajectory IoU | 0.9171 |
 | Crosshair pixel mismatches | 0 |
 
-The autoencoder implementation, training configuration, evaluation code, and
-reconstruction images/videos will be added to this repository next.
+The autoencoder implementation, accepted training configuration, evaluation
+code, and dataset readers are included in this repository. Checkpoints and
+training data are not included.
 
 ## World model: work in progress
 
@@ -327,11 +362,8 @@ enough to share.
 ## Repository status
 
 This is an evolving personal experiment rather than a finished library or a
-promised release. Planned additions include:
-
-- simulator and dataset documentation;
-- autoencoder training and evaluation code;
-- reconstruction images and videos;
-- dataset packaging and download instructions, when ready;
-- world-model code and results when they are ready to present.
+promised release. The current public boundary is the dataset-generation tooling,
+dataset/shard utilities, and autoencoder code. Simulator source, assets,
+packaged builds, datasets, checkpoints, experiment storage, and recurrent
+world-model implementation are not included.
 

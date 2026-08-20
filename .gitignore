@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Generated datasets, reviews, logs, and training outputs.
+GeneratedData/
+artifacts/
+checkpoints/
+runs/
+*.log
+*.pid
+*.pt
+*.pth
+
+# Packaged simulator builds are distributed separately, if at all.
+Linux/
+Windows/
+*.exe
+*.pak
+*.ucas
+*.utoc

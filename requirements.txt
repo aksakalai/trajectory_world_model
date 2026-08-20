@@ -1,0 +1,6 @@
+torch>=2.8
+torchvision>=0.23
+Pillow>=11
+numpy>=2.0
+pyarrow>=18
+pytest>=9
